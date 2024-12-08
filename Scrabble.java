@@ -59,26 +59,28 @@ public class Scrabble {
     // If the length of the word equals the length of the hand, adds 50 points to the score.
     // If the word includes the sequence "runi", adds 1000 points to the game.
     public static int wordScore(String word) {
-        int score = 0;
-
-        // Calculate basic letter scores
-        for (int i = 0; i < word.length(); i++) {
-            char c = word.charAt(i);
-            score += SCRABBLE_LETTER_VALUES[c - 'a'];
-        }
-
-        // Check if the word uses all letters in the hand
-        if (word.length() == HAND_SIZE) {
-            score += 50; // Bonus for using all letters
-        }
-
-        // Check if the word includes "runi"
-        if (word.contains("runi")) {
-            score += 1000; // Bonus for including "runi"
-        }
-
-        return score;
-    }
+		if (word == null || word.isEmpty()) return 0; // Handle empty or null input
+		int score = 0;
+	
+		// Calculate letter values
+		for (int i = 0; i < word.length(); i++) {
+			char c = word.charAt(i);
+			score += SCRABBLE_LETTER_VALUES[c - 'a'];
+		}
+	
+		// Check for "runi" bonus
+		if (word.contains("runi")) {
+			score += 1000;
+		}
+	
+		// Check if the word uses all letters in the hand
+		if (word.length() == HAND_SIZE) {
+			score += 50;
+		}
+	
+		return score;
+	}
+	
 
     // Creates a random hand of length (HAND_SIZE - 2) and then inserts
     // into it, at random indexes, the letters 'a' and 'e'
@@ -112,35 +114,28 @@ public class Scrabble {
     // 2. The user gets the Scrabble points of the entered word.
     // 3. The user is prompted to enter another word, or '.' to end the hand. 
     public static void playHand(String hand) {
-        int n = hand.length();
-        int score = 0;
-        // Declares the variable in to refer to an object of type In, and initializes it to represent
-        // the stream of characters coming from the keyboard. Used for reading the user's inputs.   
-        In in = new In();
-        while (hand.length() > 0) {
-            System.out.println("Current Hand: " + MyString.spacedString(hand));
-            System.out.println("Enter a word, or '.' to finish playing this hand:");
-            // Reads the next "token" from the keyboard. A token is defined as a string of 
-            // non-whitespace characters. Whitespace is either space characters, or  
-            // end-of-line characters.
-            String input = in.readString();
-            if (input.equals(".")) {
-                break;
-            }
-            if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
-                score += wordScore(input);
-                System.out.println("Word accepted! Score: " + score);
-                hand = MyString.remove(hand, input);
-            } else {
-                System.out.println("Invalid word. Try again.");
-            }
-        }
-        if (hand.length() == 0) {
-            System.out.println("Ran out of letters. Total score: " + score + " points");
-        } else {
-            System.out.println("End of hand. Total score: " + score + " points");
-        }
-    }
+		int score = 0;
+		In in = new In(); // Assuming In reads input from a mockable source
+	
+		while (!hand.isEmpty()) {
+			System.out.println("Current Hand: " + MyString.spacedString(hand));
+			System.out.println("Enter a word, or '.' to finish playing this hand:");
+			String input = in.readString();
+			if (input.equals(".")) break;
+	
+			if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
+				int wordScore = wordScore(input);
+				score += wordScore;
+				System.out.println(input + " earned " + wordScore + " points. Total score: " + score + " points.");
+				hand = MyString.remove(hand, input);
+			} else {
+				System.out.println("Invalid word. Try again.");
+			}
+		}
+	
+		System.out.println("End of hand. Total score: " + score + " points.");
+	}
+	
 
     // Plays a Scrabble game. Prompts the user to enter 'n' for playing a new hand, or 'e'
     // to end the game. If the user enters any other input, writes an error message.
