@@ -78,6 +78,7 @@ public class Scrabble {
             System.out.println("Current Hand: " + MyString.spacedString(hand));
             System.out.println("Enter a word, or '.' to finish playing this hand:");
             String input = in.readString();
+
             if (input.equals(".")) break;
 
             if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
@@ -100,6 +101,7 @@ public class Scrabble {
         while (true) {
             System.out.println("Enter n to deal a new hand, or e to end the game:");
             String input = in.readString();
+
             if (input.equals("n")) {
                 String hand = createHand();
                 playHand(hand);
@@ -113,39 +115,15 @@ public class Scrabble {
     }
 
     public static void main(String[] args) {
-        testBuildingTheDictionary();
         testScrabbleScore();
-        testCreateHands();
-        testPlayHands();
         playGame();
     }
 
-    public static void testBuildingTheDictionary() {
-        init();
-        for (int i = 0; i < 5; i++) {
-            System.out.println(DICTIONARY[i]);
-        }
-        System.out.println(isWordInDictionary("mango"));
-    }
-
     public static void testScrabbleScore() {
-        System.out.println(wordScore("cat"));
-        System.out.println(wordScore("dog"));
-        System.out.println(wordScore("quiz"));
-        System.out.println(wordScore("friendship"));
-        System.out.println(wordScore("running"));
-    }
-
-    public static void testCreateHands() {
-        System.out.println(createHand());
-        System.out.println(createHand());
-        System.out.println(createHand());
-    }
-
-    public static void testPlayHands() {
-        init();
-        playHand("ocostrza");
-        playHand("arbffip");
-        playHand("aretiin");
+        System.out.println("'cat' -> " + wordScore("cat") + " (expected: 15)");
+        System.out.println("'dog' -> " + wordScore("dog") + " (expected: 15)");
+        System.out.println("'quiz' -> " + wordScore("quiz") + " (expected: 88)");
+        System.out.println("'friendship' -> " + wordScore("friendship") + " (expected: 240)");
+        System.out.println("'running' -> " + wordScore("running") + " (expected: 1056)");
     }
 }
