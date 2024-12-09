@@ -29,6 +29,7 @@ public class Scrabble {
 
     public static int wordScore(String word) {
         if (word == null || word.isEmpty()) return 0;
+
         int score = 0;
 
         for (int i = 0; i < word.length(); i++) {
